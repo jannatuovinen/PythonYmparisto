@@ -2,8 +2,9 @@
 Esimerkkejä Python-ympäristön asetuksista
 
 ## Taulukot
-| Tiedosto | Tarkoitus | Tarvitsee moduleita | Käyttää tätä moduulia |
+| Tiedosto | Tarkoitus | Tarvitsee moduuleita / kirjastoja | Käyttää tätä moduulia |
 |---|---|---|---|
-test.py | Pääohjelma | database.py, ui.py | -
-database.py | Tietokanta api | sql.py | test.py
+app.py | Pääohjelma | sound.py, video.py | -
+sound.py | Äänimoduuli | winsound.py | app.py
+video.py | Web-kameramoduuli | opencv-python | app.py
 
