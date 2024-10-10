@@ -194,7 +194,8 @@ if __name__ == "__main__":
 
     print('Ja tämä tulee virheenkäsittelyn jälkeen näkyviin')
 
-    searchLetter = '+'
+    searchLetter = 'x'
+    found = False
 
     for value in validCenturyCodes:
         if value == searchLetter:
