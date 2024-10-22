@@ -138,7 +138,6 @@ def checkHeTu(hetu):
         except :
             result = (6, 'Vuosisatakoodi virheellinen')
 
-        # TODO: Tähän modulo 31 tarkisteen laskenta ja vertaus 
         partsCombined = dayPart + monthPart + yearPart + numberPart
     
         if partsCombined.isdigit() and result == (0, 'OK') :
@@ -154,7 +153,6 @@ def checkHeTu(hetu):
         
     return result
 
-# TODO: Poista loput rivit, kun valmista!
 # Kokeillaan erilaisia vaihtoehtoja
 # ---------------------------------
 
