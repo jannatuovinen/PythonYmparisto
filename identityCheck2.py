@@ -3,7 +3,9 @@
 
 # KIRJASTOT JA MODUULIT
 # ---------------------
+
 # TODO: Tuo kirjasto päivämäärälaskentaa varten
+import datetime
 
 # LUOKAT
 # ------
@@ -143,7 +145,6 @@ class NationalSSN:
                 return False
         else:
             return False
-
 
 # MAINKOKEILUJA VARTEN (Poista, kun ei enää tarvita)
 # ==================================================
