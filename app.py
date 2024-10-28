@@ -45,6 +45,7 @@ while True:
         except Exception as e:
             print('Syöttämässäsi sosiaaliturvatunnuksessa oli virhe', e)
         
+    # TODO: Lisää tähän else-haara, joka kertoo, että HeTu oli virheellinen
 
     # Kysy halutaanko poistua ohjelmasta
     wantAbort = input('Haluatko päättää ohjelman k/E: ')
