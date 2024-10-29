@@ -113,6 +113,7 @@ class NationalSSN:
                     'number':  birthNumberPart,
                     'checksum': checksumPart
                     }
+        # Else haaran tarkoitus on vain estää Pylance-virhe, ei palauta mitään, vaan antaa virheilmoituksen, jos HeTu väärän mittainen
         else:
             return {'status': 'error'}
 
@@ -188,7 +189,6 @@ class NationalSSN:
     def getGender(self) -> None:
         """Sets the gender property of the object (in finnish)
         """
-
         # Tarkistetaan ensin, onko SSN oikein syötetty
         if self.isValidSsn():
 
