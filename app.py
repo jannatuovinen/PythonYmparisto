@@ -8,7 +8,7 @@
 # --------
 
 from avtools import sound # Äänimerkit ja äänitiedostot
-from avtools import video # Videomoduuli
+# from avtools import video # Videomoduuli
 import identityCheck2
 
 # ASETUKSET
@@ -35,6 +35,8 @@ def askName(question: str) -> str:
     return name
 
 
+
+# Varmistetaan, ettei ohjelma käynnisty, kun se tuodaan toiseen moduuliin importilla
 
 if __name__ == "__main__":
 
