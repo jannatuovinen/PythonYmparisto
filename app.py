@@ -8,7 +8,7 @@
 # --------
 
 from avtools import sound # Äänimerkit ja äänitiedostot
-# from avtools import video # Videomoduuli
+from avtools import video # Videomoduuli
 import identityCheck2
 
 # ASETUKSET
