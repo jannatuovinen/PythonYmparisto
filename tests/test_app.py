@@ -10,4 +10,4 @@ def test_smallInput(monkeypatch):
 
     # Lähetetään simuloitu syöte monkeypatch:n avulla funtiolle
     monkeypatch.setattr('builtins.input', lambda _: simulatedInput) 
-    assert app.askName('Etunimi') == 'Anna-Liisa'
+    assert app.askName('Nimi') == 'Anna-Liisa'
