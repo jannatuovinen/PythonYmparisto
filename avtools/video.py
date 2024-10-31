@@ -7,7 +7,7 @@
 # ---------------------
 
 # Ulkoinen kirjasto opencv-python ladataan nimellä cv2
-import cv2
+#import cv2
 
 # FUNKTIO, JOKA KÄYNNISTÄÄ WEB-KAMERAN JA NÄYTTÄÄ KUVAA IKKUNASSA
 # ---------------------------------------------------------------
