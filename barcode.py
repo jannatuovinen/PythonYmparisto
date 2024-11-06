@@ -32,29 +32,19 @@ def calculateCode128BChecksum(text: str) -> int:
     Returns:
         int: Modulo 103 checksum weighted values
     """
-    text = text.strip() # Poistetaan ylimääräiset tyhjät alusta ja lopusta
+    text = text.strip()
     numberOfLetters = len(text)
-    weightedSum = 0 # Alustetaan summa tyhjäksi
-
-    # Käydään teksti kirjaimittain läpi
+    weightedSum = 0
     for number in range(numberOfLetters):
         letter = text[number]
-
-        # Kutsutaan funktiota, joka palauttaa 128-koodin arvon
         code128BValue = barCodeValue(letter)
-
-        # Lasketaan sijannilla painotettu painotettu arvo
         weightedValue = code128BValue * (number + 1)
-
-        # Lisätään se summaan
         weightedSum = weightedSum + weightedValue
-
-    # Lisätään alkumerkin arvo silmukan jälkeen
-    weightedSum = weightedSum + 104 # Lisätään alkumerkin arvo
-    code128BChecksum = weightedSum % 103 # Lasketaan jakojäännös mod 103
+    weightedSum = weightedSum + 104
+    code128BChecksum = weightedSum % 103
     return code128BChecksum
 
-# TODO: Tee tämä funktio loppuun ja testaa sitä notepadissa
+
 def createCode128B(text: str) -> str:
     """Creates a complete code128B barcode to be printed using Libre Code 128 font
 
@@ -72,7 +62,128 @@ def createCode128B(text: str) -> str:
     code128BarcodeString = startChar + text + checkSumSymbol + stopChar
     return code128BarcodeString
 
+# LUOKKA VIIVAKOODEILLE
+# =====================
+# TODO: Tee Common-variantista oletus
+class Code128B():
+    """Generates Code128B barcodes. Supports variants common, uncommon and Barcodesoft"""
+    def __init__(self, text: str, variant: str = 'Common') -> None:
+        """Checks if text contains only valid characters for Code128B barcode
+
+        Args:
+            text (str): A text string to be converted into a barcode
+            variant (str, optional): Variant of Code128B. Valid values: Common, Uncommon, and Barcodesoft. Defaults to 'Common'.
+        """
+        self.text = text
+        self.variant = variant
+        self.validRangeAll = range(33,126)
+        self.validRangeCommon = range(195,202)
+        self.valisRangeUncommon = range(200,207)
+        self.validRangeBarcodesoft = range(240,247)
+        self.commonSpecialChar =(32, 194, 207)
+        self.uncommonSpecialChar = 212
+        self.barcodeSoftSpecialChar = 252
+
+
+    def checkValidityOfText(self) -> bool | None:
+        textLenght = len(self.text)
+        isValid = False
+        if self.variant == 'Common':
+            for index in range(textLenght):
+                character = self.text[index]
+                characterValue = ord(character)
+                if characterValue in self.validRangeAll or characterValue in self.validRangeCommon or characterValue in self.commonSpecialChar:
+                    isValid = True
+                else:
+                    errorMessage = 'Text string contains invalid characters ' + '(' + character + ')'
+                    raise ValueError(errorMessage)
+                    # TODO: Lisää virheilmoitukseen se merkki, joka virheen aiheutti
+        elif self.variant == 'Uncommon':
+            for index in range(textLenght):
+                character = self.text[index]
+                characterValue = ord(character)
+                if characterValue in self.validRangeAll or characterValue in self.validRangeCommon or characterValue == self.uncommonSpecialChar:
+                    isValid = True
+                else:
+                    errorMessage = 'Text string contains invalid characters ' + '(' + character + ')'
+                    raise ValueError(errorMessage)
+                    
+        elif self.variant == 'Barcodesoft':
+            for index in range(textLenght):
+                character = self.text[index]
+                characterValue = ord(character)
+                if characterValue in self.validRangeAll or characterValue in self.validRangeCommon or characterValue == self.uncommonSpecialChar:
+                    isValid = True
+                else:
+                    errorMessage = 'Text string contains invalid characters ' + '(' + character + ')'
+                    raise ValueError(errorMessage)
+                    
+        else:
+                errorMessage = 'Invalid variant ' + '(' + self.variant + '): Common, Uncommon and Barcodesoft supported'
+                raise ValueError(errorMessage)
+            
+        return isValid
+
+    # Metodi, joka tuottaa viivakoodin sisällön
+    def buildBarcode(self) -> str:
+        """Returns a string presentation of the barcode
+
+        Returns:
+            str: barcode with start symbol, text, checksum symbol and stop symbol
+        """
+        rawText = self.text
+        variant = self.variant
+        startValues = {'Common': 204, 'Uncommon': 209, 'Barcodesoft': 249}
+        stopValues = {'Common': 206, 'Uncommon': 211, 'Barcodesoft': 251} 
+        subtractValues = {'Common': 100, 'Uncommon': 105, 'Barcodesoft': 145}
+
+        # Katsotaan onko tekstissä pelkästään sallittuja merkkejä
+        if self.checkValidityOfText() == True:
+            rawTextLenght = len(rawText)
+            weightedSum = 0
+
+            # Käydään merkkijonon silmukassa läpi ja lasketaan varmistussumman arvot
+            for index in range(rawTextLenght):
+                character = rawText[index]
+                characterValue = ord(character)
+
+                # Normaalit merkit 32 - 126, alle 32 ei tarvitse enää huomioida
+                if characterValue < 127:
+                    value = characterValue -32
+
+                 # Erikoismerkit, joiden arvo on 0   
+                elif characterValue in (194, 207, 212, 252):
+                    value = 0
+
+                # Varianttien erikoismerkit, rajat tarkisettu jo aiemmin   
+                else:
+                    value = characterValue - subtractValues[variant]
+
+
+                # Kirjaimen painotetun arvon lisääminen, huom indeksi alkaa 0:sta kertoimet 1:sta 
+                weightedSum = weightedSum + (index + 1) * value
+
+            # Alkumerkin sisältävä painotettu summa
+            weightedSum = weightedSum + startValues[variant]
+            
+            # Lopullinen vamistussumma jakojäännös 103:lla jaettaessa
+            checksum = weightedSum % 103
+
+            # Generoidaan lopullinen viivakoodi alkumerkki + raakateksti + varmistussumma + loppumerkki
+            startChar = chr(startValues[variant])
+            stopChar = chr(stopValues[variant])
+            checksumChar = chr(checksum + 32)
+            barcode = startChar + rawText + checksumChar + stopChar
+
+        return barcode
+
+          
 if __name__ == "__main__":
-    testString = '128B'
-    print('painoteut arvot yhteensä:', calculateCode128BChecksum(testString))
-    print('Koko viivakoodi on', createCode128B('128B'))
+    testi = Code128B('128B')
+    try:
+        tulos = testi.checkValidityOfText()
+        print(testi.text, 'on kelvollinen viivakoodiksi', tulos)
+        viivakoodi = testi. buildBarcode()
+        print('Viivakoodin sisältö on', viivakoodi)
+    except Exception as e:
+        print('Tapahtui virhe', testi.text, e)
