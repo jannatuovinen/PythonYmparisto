@@ -51,7 +51,7 @@ def test_invalidVariant():
 # Testit Uncommon-variantille
 barcode4 = barcode.Code128B(text1, 'Uncommon')
 def test_Uncommon128B():
-    assert barcode4.text == '128B'
+    assert barcode1.text == '128B'
     assert barcode4.variant == 'Uncommon'
 
 def test_Uncommon128BValid():
