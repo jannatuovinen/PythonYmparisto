@@ -34,7 +34,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Kun poistutaan ssnLineEdit-elemntistä suoritetaan barcodeLabel-elementin päivitys
         self.ui.ssnLineEdit.editingFinished.connect(self.updateBarcodeLabel)
 
-    
+        # TODO: Lisää alkukirjainten muuttaminen isoiksi etu- ja sukunimikenttiin.
     
     # OHJELMOIDUT SLOTIT
     # ------------------
@@ -44,7 +44,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Tarkistetaan, että henkilötunnus on oikein muodostettu
         uiSsn = self.ui.ssnLineEdit.text().upper() # Luetaan käyttöliittymästä henkilötunnus
         ssnToCheck = identityCheck2.NationalSSN(uiSsn) # Luodaan henkilötunnusobjekti
-        
+        # TODO: Lisää tähän hetun muutos isoiksi kirjaimiksi ssnLineEdittiin
         # Jos se on oikein, luodaan viivakoodi
         if ssnToCheck.isValidSsn():
             barcode128 = barcode.Code128B(uiSsn) # Luodaan viivakoodi-olio
@@ -54,7 +54,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Jos se muodostettu väärin näytetään virheilmoitus MessageBox-ikkunassa
         else:
             self.errorTitle = 'Henkilötunnus virheellinen'
-            self.errorText = 'Syöttämässäsi henkilötunnuksessa on virhe'
+            self.errorText = ssnToCheck.errorMessage
             self.openErrorMsgBox(self.errorTitle, self.errorText)
 
     # Virheilmoitusikkuna
@@ -68,8 +68,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 if __name__ == "__main__":
 
-    # Luodaan sovellus ja käynnistetään se
+    # Luodaan sovellus, jossa on käyttöjärjestelmästä riippumaton ulkonäkö (fusion)
     app = QtWidgets.QApplication(sys.argv)
+    app.setStyle('Fusion')
 
     # Luodaan objekti pääikkunalle ja tehdään siitä näkyvä
     window = MainWindow()
