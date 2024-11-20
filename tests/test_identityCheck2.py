@@ -88,3 +88,16 @@ def test_splitSsn():
 def test_getDateOfBirth():
     testSsnOK.getDateOfBirth()
     assert testSsnOK.dateOfBirth == '1928-07-13'
+
+# TODO: Tee testit virheilmoituksille
+def test_ssnShortError(): # Liian lyhyt hetu
+    testSsnShort.isValidSsn()
+    assert testSsnShort.errorMessage == 'Henkilötunnuksesta puuttuu merkkejä'
+
+def test_ssnLongError(): # Liian pitkä hetu
+    testSsnLong.isValidSsn()
+    assert testSsnLong.errorMessage == 'Henkilötunnuksessa ylimääräisiä merkkejä'
+
+def test_SsnInvalidError(): # Muu virhe
+    testSsnWrongCheckSum.isValidSsn():
+    assert testSsnWrongCheckSum.errorMessage == ' Syötetty henkilötunnus ei vastaa varmistussummaa'
