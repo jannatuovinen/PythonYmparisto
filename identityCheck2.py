@@ -189,8 +189,7 @@ class NationalSSN:
 
             # Palautetaan ikä vuosina
             return ageInYears
-    
-    # TODO: Metodi sukupuolen selvittämiseen sekä number- ja gender-ominaisuuden asettamiseen
+  
     def getGender(self):
 
         # Tarkistetaan ensin, onko SSN oikein syötetty

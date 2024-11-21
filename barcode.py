@@ -64,7 +64,7 @@ def createCode128B(text: str) -> str:
 
 # LUOKKA VIIVAKOODEILLE
 # =====================
-# TODO: Tee Common-variantista oletus
+
 class Code128B():
     """Generates Code128B barcodes. Supports variants common, uncommon and Barcodesoft"""
     def __init__(self, text: str, variant: str = 'Common') -> None:
@@ -97,7 +97,7 @@ class Code128B():
                 else:
                     errorMessage = 'Text string contains invalid characters ' + '(' + character + ')'
                     raise ValueError(errorMessage)
-                    # TODO: Lisää virheilmoitukseen se merkki, joka virheen aiheutti
+        
         elif self.variant == 'Uncommon':
             for index in range(textLenght):
                 character = self.text[index]
